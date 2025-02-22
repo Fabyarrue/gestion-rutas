@@ -1,0 +1,4 @@
+ID,Ruta,Distancia (km),Partida,Destino,Latitud Partida,Longitud Partida,Latitud Destino,Longitud Destino,Capacidad,Carga Actual,Eficiencia
+1,Ruta Centro-Norte,6.5,"Av. Balmaceda 2500, Antofagasta",Universidad de Antofagasta,-23.641716,-70.398352,-23.608692,-70.399209,100,20,Baja
+2,Ruta Costera,12.3,Terminal Pesquero Antofagasta,Balneario Municipal Antofagasta,-23.632961,-70.408326,-23.677722,-70.403693,80,50,Media
+3,Ruta Mall-Hospital,8.9,Mall Plaza Antofagasta,Hospital Regional de Antofagasta,-23.674183,-70.404219,-23.635238,-70.388189,120,100,Alta
