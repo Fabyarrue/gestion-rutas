@@ -19,9 +19,8 @@ class Nodo:
     Representa un nodo en el árbol binario.  Cada nodo contiene la información
     de una ruta de entrega.
     """
-    def __init__(self, id_ruta, nombre, distancia, partida=None, destino=None,
-                 lat_partida=None, lon_partida=None, lat_destino=None,
-                 lon_destino=None, capacidad=0, carga_actual=0):
+    def __init__(self, id_ruta, nombre, distancia, partida=None, destino=None, lat_partida=None, lon_partida=None,
+                 lat_destino=None, lon_destino=None, capacidad=0, carga_actual=0):
         """
         Inicializa un nuevo nodo.
 
@@ -94,13 +93,13 @@ class ArbolBinarioBusqueda:
         Returns:
             bool: True si la inserción fue exitosa, False si la ruta ya existe (ID duplicado).
         """
-        # DEBUG: print(f"DEBUG (Arbol): Intentando insertar ruta con ID: {id_ruta}")
+        # #DEBUG (Arbol): Intentando insertar ruta con ID: {id_ruta}
         if self.buscar(id_ruta) or self.buscar_por_nombre(nombre):
-            # DEBUG: print(f"DEBUG (Arbol): Ruta con ID {id_ruta} o nombre {nombre} ya existe.")
+            # #DEBUG (Arbol): Ruta con ID {id_ruta} o nombre {nombre} ya existe.
             return False  # Ya existe una ruta con ese ID o nombre
         self.raiz = self._insertar_nodo(self.raiz, id_ruta, nombre, distancia, partida, destino, lat_partida,
                                         lon_partida, lat_destino, lon_destino, capacidad, carga_actual)
-        # DEBUG: print(f"DEBUG (Arbol): Inserción de ruta con ID {id_ruta} exitosa.")
+        # #DEBUG (Arbol): Inserción de ruta con ID {id_ruta} exitosa.
         return True
 
     def _insertar_nodo(self, nodo, id_ruta, nombre, distancia, partida, destino, lat_partida, lon_partida,
@@ -109,7 +108,7 @@ class ArbolBinarioBusqueda:
         Función auxiliar recursiva para insertar un nodo en el árbol.
         """
         if nodo is None:
-            # DEBUG: print(f"DEBUG (Arbol): Creando nuevo nodo para ID: {id_ruta}")
+            # #DEBUG (Arbol): Creando nuevo nodo para ID: {id_ruta}
             return Nodo(id_ruta, nombre, distancia, partida, destino, lat_partida, lon_partida, lat_destino,
                         lon_destino, capacidad, carga_actual)
         if id_ruta < nodo.id_ruta:
@@ -219,10 +218,10 @@ class ArbolBinarioBusqueda:
         Returns:
             list: Una lista de tuplas, donde cada tupla contiene la información de una ruta.
         """
-        # print("DEBUG (Arbol): Obteniendo todas las rutas...")
+        # #DEBUG (Arbol): Obteniendo todas las rutas...
         rutas = []
         self._inorden(self.raiz, rutas)
-        # print(f"DEBUG (Arbol): Rutas obtenidas: {rutas}")
+        # #DEBUG (Arbol): Rutas obtenidas: {rutas}
         return rutas
 
     def _inorden(self, nodo, rutas):
@@ -260,12 +259,12 @@ class ArbolBinarioBusqueda:
                   o si ya existe una ruta con el nuevo nombre.
         """
 
-        # DEBUG: print(f"DEBUG (Arbol): Intentando modificar ruta con ID: {id_ruta}")
+        # #DEBUG (Arbol): Intentando modificar ruta con ID: {id_ruta}
         nodo = self.buscar(id_ruta)
 
         if nodo:
             if nuevo_nombre != nodo.nombre and self.buscar_por_nombre(nuevo_nombre):
-                # DEBUG: print(f"DEBUG (Arbol): Ya existe una ruta con el nombre {nuevo_nombre}")
+                # #DEBUG (Arbol): Ya existe una ruta con el nombre {nuevo_nombre}
                 return False  # Ya existe una ruta con ese nombre
 
             nodo.nombre = nuevo_nombre
@@ -283,10 +282,10 @@ class ArbolBinarioBusqueda:
             if nueva_carga_actual is not None:
                 nodo.carga_actual = nueva_carga_actual
 
-            # DEBUG: print(f"DEBUG (Arbol): Modificación de ruta con ID {id_ruta} exitosa.")
+            # #DEBUG (Arbol): Modificación de ruta con ID {id_ruta} exitosa.
             return True
 
-        # DEBUG: print(f"DEBUG (Arbol): No se encontró la ruta con ID {id_ruta} para modificar.")
+        # #DEBUG (Arbol): No se encontró la ruta con ID {id_ruta} para modificar.
         return False
 
 
@@ -301,8 +300,8 @@ class Aplicacion:
         self.longitud_partida = None
         self.latitud_destino = None
         self.longitud_destino = None
-        self.mapa_dialog = None  
-        self.modo_edicion = False
+        self.mapa_dialog = None
+        self.modo_edicion = False # <-- Modo edición
 
         # --- Título ---
         self.label_titulo = tk.Label(root, text="Gestión de Rutas de Entrega", bg="#E2FFD1", font=("Arial", 16, "bold"))
@@ -323,10 +322,11 @@ class Aplicacion:
         self.label_id.grid(row=0, column=0, padx=(0, 5), pady=5, sticky="e")
         self.entry_id = tk.Entry(input_frame, width=10)
         self.entry_id.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="w")
-        self.entry_id.config(state="normal")
+        self.entry_id.config(state="normal")  # <-- HABILITADO al inicio
         self.id_info_label = tk.Label(input_frame, text="* (Autogenerado - No utilizar para agregar ruta)", bg="#E3F2FD", font=("Arial", 8, "italic"), fg="red")
         self.id_info_label.grid(row=0, column=2, padx=(0, 10), pady=5, sticky="w")
 
+        # ... (resto de los widgets: Ruta, Partida, Destino, Distancia, Capacidad, Carga Actual) ...
         # Ruta
         self.label_nombre = tk.Label(input_frame, text="Ruta:", bg="#E3F2FD", font=("Arial", 10, "bold"))
         self.label_nombre.grid(row=1, column=0, padx=(0, 5), pady=5, sticky="e") #Usamos east para alinear a la derecha
@@ -354,7 +354,8 @@ class Aplicacion:
         self.label_distancia.grid(row=4, column=0, padx=(0, 5), pady=5, sticky="e") #Usamos east para alinear a la derecha
         self.entry_distancia = tk.Entry(input_frame, width=10)
         self.entry_distancia.grid(row=4, column=1, padx=(0, 5), pady=5, sticky="w")
-        
+        #self.entry_distancia.config(state="disabled") # Ya no es necesario deshabilitarlo
+
         # Etiqueta de información para la distancia
         self.distancia_info_label = tk.Label(input_frame, text="* (Se calcula automáticamente si se deja en blanco)", bg="#E3F2FD", font=("Arial", 8, "italic"), fg="blue")
         self.distancia_info_label.grid(row=4, column=2, padx=(0,10), pady=5, sticky="w")
@@ -376,7 +377,7 @@ class Aplicacion:
         # Frame para los botones
         button_frame = tk.Frame(root, bg="#E2FFD1")
         button_frame.grid(row=2, column=0, columnspan=5, pady=10, sticky="ew")
-        #Se configura el frame para que se centre
+        # Se configura el frame para que se centre
         button_frame.columnconfigure(0, weight=1)
         button_frame.columnconfigure(1, weight=1)
         button_frame.columnconfigure(2, weight=1)
@@ -449,10 +450,10 @@ class Aplicacion:
         self.root.grid_columnconfigure(4, weight=1)
 
 
-        # Vincular el evento de selección
+        # Vincular el evento de selección a la función cargar_ruta_seleccionada
         self.tree.bind("<<TreeviewSelect>>", self.seleccionar_ruta)
 
-         # Vincular clic izquierdo (fuera de la tabla) 
+        # Vincular clic izquierdo (fuera de la tabla)
         self.root.bind("<Button-1>", lambda event: self.limpiar_campos() \
             if event.widget not in (self.tree, self.btn_agregar, self.btn_buscar, self.btn_eliminar, \
                                     self.btn_modificar, self.btn_informe, self.btn_ver_mapa, \
@@ -461,8 +462,9 @@ class Aplicacion:
                                     self.entry_partida, self.entry_destino, self.entry_capacidad, self.entry_carga_actual) \
             and not self.modo_edicion else None)
 
+
         self.root.bind("<Escape>", lambda event: self.limpiar_campos())  # <-- Limpiar con Escape
-        self.cargar_datos_iniciales()
+        self.cargar_datos_iniciales()  # <-- Llamada a cargar_datos_iniciales
 
     def obtener_coordenadas(self, lugar):
         """Obtiene las coordenadas (latitud, longitud) de un lugar usando Nominatim.
@@ -567,6 +569,8 @@ class Aplicacion:
                 messagebox.showerror("Error", "La carga actual debe ser un número válido.")
                 return
 
+
+
             # --- Generar ID y resto de la lógica ---
             id_ruta = self.obtener_siguiente_id()
             #DEBUG: print(f"DEBUG: agregar_ruta - ID generado: {id_ruta}")
@@ -591,7 +595,7 @@ class Aplicacion:
             #DEBUG: print(f"DEBUG: agregar_ruta - Error inesperado: {e}")
 
         finally:
-            self.limpiar_campos()  # Asegura que se limpie
+            self.limpiar_campos()
             # self.entry_id.config(state="normal") #Ya se habilita en limpiar campos.
             #DEBUG: print("DEBUG: agregar_ruta FIN")
 
@@ -612,6 +616,7 @@ class Aplicacion:
 
         if not id_ruta:  # Verificar si el campo ID está vacío
             messagebox.showerror("Error", "Ingrese un ID para buscar.")
+            # No es necesario volver a habilitar aquí, ya lo está
             return  # Salir de la función si no hay ID
 
         if id_ruta.isdigit():
@@ -620,8 +625,7 @@ class Aplicacion:
             if nodo:
                 # Carga los datos de la ruta encontrada
                 self.cargar_ruta_buscada(id_ruta_num)
-                # Ya se maneja en _cargar_ruta
-                # self.entry_id.config(state="disabled")
+                # Ya se maneja en _cargar_ruta(): self.entry_id.config(state="disabled")
             else:
                 messagebox.showerror("Error", "Ruta no encontrada.")
                 self.limpiar_campos()  # Limpiar si no se encuentra
@@ -702,7 +706,7 @@ class Aplicacion:
                 messagebox.showerror("Error", "Ruta no encontrada.")
 
     def actualizar_lista(self):
-        """Actualiza la lista de rutas en la tabla con colores en la eficiencia."""
+        """Actualiza la lista de rutas en la tabla, aplicando color solo a la palabra 'Alta', 'Media' o 'Baja'."""
         seleccion_actual = self.tree.selection()  # Guardar selección actual
 
         # Limpiar la tabla antes de actualizar
@@ -714,30 +718,34 @@ class Aplicacion:
         for ruta in rutas:
             id_ruta, nombre, distancia, partida, destino, lat_partida, lon_partida, lat_destino, lon_destino, capacidad, carga_actual = ruta
 
-            # Calcular eficiencia
+            # Calcular eficiencia y aplicar color solo a la palabra
             eficiencia = carga_actual / capacidad
             if eficiencia <= 0.4:
                 eficiencia_texto = "Baja"
+                color_eficiencia = "red"
             elif eficiencia <= 0.7:
                 eficiencia_texto = "Media"
+                color_eficiencia = "orange"
             else:
                 eficiencia_texto = "Alta"
+                color_eficiencia = "green"
 
-            # Insertar fila en la tabla
-            item_id = self.tree.insert("", "end", values=(id_ruta, nombre, distancia, partida, destino, capacidad, carga_actual, eficiencia_texto))
+            # Insertar fila en la tabla sin colores
+            item_id = self.tree.insert("", "end", values=(
+                id_ruta, nombre, distancia, partida, destino, capacidad, carga_actual, eficiencia_texto
+            ))
 
-            # Aplicar color a la columna "Eficiencia"
+            # Aplicar color solo a la columna "Eficiencia"
             self.tree.item(item_id, tags=(eficiencia_texto,))
 
         # Restaurar la selección si es posible
         if seleccion_actual:
-            seleccion_filtrada = [s for s in seleccion_actual if self.tree.exists(s)]  # Filtrar elementos eliminados
             for item in self.tree.get_children():
                 valores = self.tree.item(item, 'values')
-                if valores and seleccion_filtrada and str(valores[0]) in [self.tree.item(s, 'values')[0] for s in seleccion_filtrada]:
-                    self.tree.selection_set(item)
+                if valores and str(valores[0]) in [self.tree.item(s, 'values')[0] for s in seleccion_actual]:
+                    self.tree.selection_set(item)  # Restaurar selección
 
-        # Configurar etiquetas de color para la columna "Eficiencia"
+        # Configurar etiquetas de color SOLO para la columna "Eficiencia"
         self.tree.tag_configure("Baja", foreground="red")
         self.tree.tag_configure("Media", foreground="orange")
         self.tree.tag_configure("Alta", foreground="green")
@@ -746,19 +754,39 @@ class Aplicacion:
 
     def seleccionar_ruta(self, event):
         """Maneja la selección de una ruta en la tabla."""
-        seleccion = self.tree.selection()
+        seleccion = self.tree.selection()  # Obtener la selección actual
         #DEBUG: print(f"DEBUG: seleccionar_ruta - Selección: {seleccion}")
 
-        if seleccion:
-            item = seleccion[0]
-            #DEBUG: print(f"DEBUG: seleccionar_ruta - Item seleccionado: {item}")
-            self._cargar_ruta(item)  # Llamar a _cargar_ruta para cargar los datos
-        #else: #Ya no es necesario
-            #DEBUG: print("DEBUG: seleccionar_ruta - No hay selección.")
+        if not seleccion:  # Si no hay nada seleccionado, salir
+            #DEBUG: print("DEBUG: No hay selección en la tabla.")
+            return
 
+        item = seleccion[0]  # Obtener el primer elemento seleccionado
+        valores = self.tree.item(item, "values")  # Obtener los valores
+        #DEBUG: print(f"DEBUG: Valores obtenidos de la fila: {valores}")
+
+        if not valores or len(valores) < 1:  # Verificar que la fila tenga valores
+            #DEBUG: print("DEBUG: No hay valores en la fila seleccionada.")
+            return
+        try:
+            id_ruta = valores[0]  # Obtener el ID
+            #DEBUG: print(f"DEBUG: Ruta seleccionada ID = {id_ruta}")
+
+            # Llamar a _cargar_ruta para llenar el resto de los campos
+            self._cargar_ruta(item)
+            
+        except IndexError:
+            print("ERROR: No se pudo obtener el ID de la ruta.")
+        except Exception as e:
+            print(f"ERROR: Ocurrió un problema inesperado en seleccionar_ruta: {e}")
 
     def limpiar_campos(self, event=None):
-        """Limpia los campos de entrada y habilita el campo ID *siempre*."""
+        """Limpia los campos de entrada y habilita el campo ID *siempre*.
+        Si se invoca desde un evento (como la tecla Escape),
+        deshabilita el ID después de limpiar, a menos que haya una selección
+        en el Treeview. Si no hay evento (llamada directa desde otra función),
+        deja el ID habilitado.
+        """
         #DEBUG: print("DEBUG: Limpiando campos...")
 
         # *Siempre* habilitar el campo ID antes de limpiar
@@ -783,7 +811,7 @@ class Aplicacion:
             self.entry_id.config(state="disabled")
         else:
             pass
-            #DEBUG: print("DEBUG: limpiar_campos - No hay evento, ID se mantiene habilitado")
+            #DEBUG: print("DEBUG: limpiar_campos - No hay evento, el ID se mantiene habilitado")
         #DEBUG: print("DEBUG: Campos limpiados.")
 
     def _cargar_ruta(self, item_id):
@@ -817,7 +845,7 @@ class Aplicacion:
                 self.longitud_partida = nodo.longitud_partida
                 self.latitud_destino = nodo.latitud_destino
                 self.longitud_destino = nodo.longitud_destino
-            # else: #Comentado el else porque si no se encuentra la ruta en la lista
+            # else: #Comentamos el else porque si no se encuentra la ruta en la lista
             # no hacemos nada
                 #DEBUG: print(f"DEBUG: _cargar_ruta - Nodo no encontrado para ID: {id_ruta}")
                 #return
@@ -840,6 +868,7 @@ class Aplicacion:
             self.entry_capacidad.insert(0, capacidad)
             self.entry_carga_actual.delete(0, tk.END)
             self.entry_carga_actual.insert(0, carga_actual)
+
 
             #DEBUG: print("DEBUG: Campos actualizados correctamente.")
         except Exception as e:
@@ -1047,7 +1076,7 @@ class Aplicacion:
                         try:
                             # Leer *todos* los campos, incluyendo la eficiencia (aunque no se use directamente)
                             id_ruta, nombre, distancia_str, partida, destino, lat_partida_str, lon_partida_str, lat_destino_str, lon_destino_str, capacidad_str, carga_actual_str, _ = fila
-                            
+
                             # Conversiones (con manejo de errores)
                             id_ruta = int(id_ruta)
                             distancia = round(float(distancia_str), 2)
@@ -1110,7 +1139,7 @@ class Aplicacion:
                 rutas = self.arbol.obtener_rutas()
                 for ruta in rutas:
                     id_ruta, nombre, distancia, partida, destino, lat_partida, lon_partida, lat_destino, lon_destino, capacidad, carga_actual = ruta
-                    # Calcular la eficiencia aquí, para que se guarde en el archivo.
+                    # Calcular la eficiencia aquí.
                     eficiencia = "N/A"
                     if capacidad > 0:  # Evitar división por cero
                         porcentaje = (carga_actual / capacidad) * 100
@@ -1202,8 +1231,8 @@ class Aplicacion:
                 distancia = round(distancia, 2)  # <--- Redondeo
                 self.entry_distancia.delete(0, tk.END)
                 self.entry_distancia.insert(0, str(distancia))  # <--- Usar str, no f-string
-        #Se movió la función de guardar datos aquí, para que cada vez que se actualicen los campos
-        #Desde el mapa, se guarden los cambios.
+        #Se movió la función de guardar datos aquí, para que cada que vez que se actualicen los campos
+        #Desde el mapa, se guarden los cambios
         self.guardar_datos()
 
 
